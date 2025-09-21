@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Chalkrise — Aluno (Mobile)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="theme-fx" id="themeFx"></div>
+
+  <!-- HEADER -->
+  <header class="m-header glass">
+    <div class="brand">
+      <div class="dot">Ch</div>
+      <div class="brand-txt">
+        <strong>Chalkrise</strong>
+        <small id="today" class="muted"></small>
+      </div>
+    </div>
+    <div class="actions">
+      <button id="loginBtn" class="chip">Login</button>
+      <button id="themeBtn" class="chip" aria-label="Alternar tema">🌙</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- INÍCIO -->
+    <section id="tab-home" class="tab active" role="region" aria-label="Início">
+      <div class="widgets">
+        <article class="card glass">
+          <div class="card-head">
+            <h2>Evento de hoje</h2>
+            <span class="pill">Calendário</span>
+          </div>
+          <div class="vstack gap-10">
+            <div class="row">
+              <div class="date-badge"><b>19</b><span>SET</span></div>
+              <div class="flex-1">
+                <strong>Reunião pedagógica</strong><br/>
+                <small class="muted">15:00 • Sala multimídia • Duração 1h</small>
+              </div>
+            </div>
+            <div class="hstack gap-8">
+              <button class="btn-primary">Ver detalhes</button>
+              <button class="btn-ghost">Adicionar lembrete</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card glass">
+          <div class="card-head">
+            <h2>Checklist rápido</h2>
+            <span class="pill">Hoje</span>
+          </div>
+          <div class="hstack gap-8">
+            <input type="text" class="input" placeholder="Adicionar item…" aria-label="Novo item">
+            <button class="btn-primary" aria-label="Adicionar item">+</button>
+          </div>
+          <ul class="list">
+            <li class="list-item"><span>Imprimir exercícios</span></li>
+            <li class="list-item"><span>Revisar pauta da reunião</span></li>
+          </ul>
+        </article>
+
+        <article class="card glass">
+          <div class="card-head">
+            <h2>Notas rápidas</h2>
+            <span class="pill">Local</span>
+          </div>
+          <textarea class="input textarea" placeholder="Escreva algo…" aria-label="Notas rápidas"></textarea>
+        </article>
+
+        <article class="card glass">
+          <div class="card-head">
+            <h2>Registro de presença</h2>
+            <span class="pill">Hoje</span>
+          </div>
+          <p class="muted">2 turmas aguardando lançamento.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CLASSROOM -->
+    <section id="tab-classroom" class="tab" role="region" aria-label="Classroom">
+      <h2>Classroom</h2>
+      <div class="t-grid">
+        <article class="t-card glass">
+          <div class="t-top">
+            <div class="avatar">AL</div>
+            <div><div class="t-name">Ana Luísa</div><div class="muted t-meta">Matemática • Manhã</div></div>
+          </div>
+          <button class="btn-primary full">Conversar</button>
+        </article>
+        <article class="t-card glass">
+          <div class="t-top">
+            <div class="avatar">RG</div>
+            <div><div class="t-name">Rafael Gomes</div><div class="muted t-meta">História • Tarde</div></div>
+          </div>
+          <button class="btn-primary full">Conversar</button>
+        </article>
+        <article class="t-card glass">
+          <div class="t-top">
+            <div class="avatar">ML</div>
+            <div><div class="t-name">Melina Lopes</div><div class="muted t-meta">Português • Manhã</div></div>
+          </div>
+          <button class="btn-primary full">Conversar</button>
+        </article>
+      </div>
+    </section>
+
+    <!-- CHAT IA -->
+    <section id="tab-ia" class="tab" role="region" aria-label="Chat IA">
+      <div class="ai">
+        <div class="card glass">
+          <div class="card-head">
+            <h2>Meus chats</h2>
+            <button id="newChatBtn" class="btn-primary">Novo</button>
+          </div>
+          <div id="chatList" class="list" aria-live="polite"></div>
+        </div>
+
+        <div class="card glass">
+          <div class="card-head">
+            <div>
+              <b id="chatTitle">Chalkrise IA</b><br/>
+              <small class="muted">Escolha um chat ou crie um novo</small>
+            </div>
+            <div class="hstack gap-8">
+              <button class="chip" id="renameChat">Renomear</button>
+              <button class="chip danger" id="deleteChat">Excluir</button>
+            </div>
+          </div>
+          <div id="chatStream" class="chat"></div>
+          <div class="composer">
+            <div class="bar">
+              <button class="chip" aria-label="Anexar">📎</button>
+              <input id="chatInput" class="c-input" placeholder="Escreva sua mensagem… (visual)" />
+              <button id="sendBtn" class="btn-primary">Enviar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- DOCK -->
+  <nav class="dock glass" aria-label="Navegação">
+    <button class="d-btn active" data-tab="home">Início 🏠</button>
+    <button class="d-btn" data-tab="classroom">Classroom 📖</button>
+    <button class="d-btn" data-tab="ia">Chat IA 🌐</button>
+  </nav>
+
+  <!-- MODAL LOGIN -->
+  <div class="modal hidden" id="loginModal">
+    <div class="scrim" data-close></div>
+    <div class="sheet glass-strong" role="dialog" aria-modal="true" aria-label="Login">
+      <div class="sheet-head">
+        <h3>Entrar</h3>
+        <button class="chip" data-close>Fechar</button>
+      </div>
+      <div class="vstack gap-10">
+        <input class="input" type="email" placeholder="nome@escola.edu.br" />
+        <input class="input" type="password" placeholder="••••••••" />
+      </div>
+      <div class="sheet-actions">
+        <button class="btn-ghost" data-close>Pular login</button>
+        <button class="btn-primary" data-close>Entrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL NOVO CHAT -->
+  <div class="modal hidden" id="chatModal">
+    <div class="scrim" data-close></div>
+    <div class="sheet glass-strong" role="dialog" aria-modal="true" aria-label="Novo chat">
+      <div class="sheet-head">
+        <h3>Novo chat</h3>
+        <button class="chip" data-close>Fechar</button>
+      </div>
+      <input id="chatNameInput" class="input" placeholder="Nome do chat" />
+      <div class="sheet-actions">
+        <button class="btn-ghost" data-close>Cancelar</button>
+        <button id="createChat" class="btn-primary">Criar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
