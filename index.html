@@ -1,193 +1,302 @@
-<!doctype html>
-<html lang="pt-BR" data-theme="dark">
+<!DOCTYPE html>
+<html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Chalkrise — Aluno (Mobile)</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <div class="theme-fx" id="themeFx"></div>
+  <meta name="theme-color" content="#0b1220" />
+  <title>LousaAI — Mobile</title>
 
-  <!-- HEADER -->
-  <header class="m-header glass">
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="theme-dark">
+  <div id="bubbles" aria-hidden="true"></div>
+
+  <header class="topbar">
     <div class="brand">
-      <div class="dot">Ch</div>
-      <div class="brand-txt">
-        <strong>Chalkrise</strong>
-        <small id="today" class="muted"></small>
+      <div class="logo">LA</div>
+      <div>
+        <div class="brand-title">LousaAI</div>
+        <div class="brand-subtitle" id="dateDisplay"></div>
       </div>
     </div>
-    <div class="actions">
-      <button id="loginBtn" class="chip">Login</button>
-      <button id="themeBtn" class="chip" aria-label="Alternar tema">🌙</button>
+    <div class="topbar-actions">
+      <button id="themeToggle" class="btn pill small">Tema: Escuro</button>
+      <button id="loginBtn" class="btn pill small solid">Login</button>
     </div>
   </header>
 
-  <main>
-    <!-- INÍCIO -->
-    <section id="tab-home" class="tab active" role="region" aria-label="Início">
-      <div class="widgets">
-        <article class="card glass">
+  <main id="book" class="main">
+    <!-- Início -->
+    <section id="homeView" class="view active" aria-labelledby="tabHome">
+      <div class="grid-widgets" data-stagger>
+        <article class="card">
           <div class="card-head">
             <h2>Evento de hoje</h2>
-            <span class="pill">Calendário</span>
+            <button class="chip">Calendário</button>
           </div>
-          <div class="vstack gap-10">
-            <div class="row">
-              <div class="date-badge"><b>19</b><span>SET</span></div>
-              <div class="flex-1">
-                <strong>Reunião pedagógica</strong><br/>
-                <small class="muted">15:00 • Sala multimídia • Duração 1h</small>
-              </div>
-            </div>
-            <div class="hstack gap-8">
-              <button class="btn-primary">Ver detalhes</button>
-              <button class="btn-ghost">Adicionar lembrete</button>
-            </div>
+          <div class="event">
+            <div class="event-title"><strong id="eventTitle">19 SET — Reunião pedagógica</strong></div>
+            <div class="event-time">15:00 • Sala multimídia</div>
+            <div class="event-meta">Duração <span>1h</span> • <span>Traga diário</span></div>
+          </div>
+          <div class="card-actions">
+            <button class="btn outline" id="seeEvent">Ver detalhes</button>
+            <button class="btn solid" id="addReminder">Adicionar lembrete</button>
           </div>
         </article>
 
-        <article class="card glass">
+        <article class="card">
           <div class="card-head">
             <h2>Checklist rápido</h2>
-            <span class="pill">Hoje</span>
+            <button class="chip" id="quickToday">Hoje</button>
           </div>
-          <div class="hstack gap-8">
-            <input type="text" class="input" placeholder="Adicionar item…" aria-label="Novo item">
-            <button class="btn-primary" aria-label="Adicionar item">+</button>
+          <div class="checklist">
+            <div class="input-row">
+              <input id="todoInput" type="text" placeholder="Adicionar item..." />
+              <button id="addTodo" class="btn solid">Adicionar</button>
+            </div>
+            <ul id="todoList" class="list"></ul>
           </div>
-          <ul class="list">
-            <li class="list-item"><span>Imprimir exercícios</span></li>
-            <li class="list-item"><span>Revisar pauta da reunião</span></li>
-          </ul>
         </article>
 
-        <article class="card glass">
+        <article class="card">
           <div class="card-head">
             <h2>Notas rápidas</h2>
-            <span class="pill">Local</span>
+            <div class="tools">
+              <button id="saveNotes" class="btn small outline">Salvar</button>
+              <button id="clearNotes" class="btn small outline danger">Excluir</button>
+            </div>
           </div>
-          <textarea class="input textarea" placeholder="Escreva algo…" aria-label="Notas rápidas"></textarea>
+          <textarea id="quickNotes" class="notes" placeholder="Escreva algo..."></textarea>
         </article>
 
-        <article class="card glass">
+        <article class="card span-3">
           <div class="card-head">
             <h2>Registro de presença</h2>
-            <span class="pill">Hoje</span>
+            <button class="chip" id="presenceToday">Hoje</button>
           </div>
-          <p class="muted">2 turmas aguardando lançamento.</p>
+          <p id="presenceInfo" class="muted">Carregando turmas...</p>
+          <div id="presenceClasses" class="presence"></div>
+          <div class="cal-wrap">
+            <div class="cal-head">
+              <button id="calPrev" class="icon-btn">‹</button>
+              <div id="calLabel" class="cal-label"></div>
+              <button id="calNext" class="icon-btn">›</button>
+            </div>
+            <div id="calendar" class="calendar"></div>
+          </div>
         </article>
       </div>
     </section>
 
-    <!-- CLASSROOM -->
-    <section id="tab-classroom" class="tab" role="region" aria-label="Classroom">
-      <h2>Classroom</h2>
-      <div class="t-grid">
-        <article class="t-card glass">
-          <div class="t-top">
-            <div class="avatar">AL</div>
-            <div><div class="t-name">Ana Luísa</div><div class="muted t-meta">Matemática • Manhã</div></div>
+    <!-- Turmas -->
+    <section id="turmasView" class="view" aria-labelledby="tabTurmas">
+      <div class="split">
+        <aside class="sidebar">
+          <div class="sidebar-head">
+            <h3>Turmas</h3>
+            <input id="classSearch" type="search" placeholder="Pesquisar..." />
           </div>
-          <button class="btn-primary full">Conversar</button>
-        </article>
-        <article class="t-card glass">
-          <div class="t-top">
-            <div class="avatar">RG</div>
-            <div><div class="t-name">Rafael Gomes</div><div class="muted t-meta">História • Tarde</div></div>
+          <ul id="classList" class="nav-list"></ul>
+        </aside>
+
+        <section class="content">
+          <div id="classEmpty" class="placeholder">
+            <h3>Selecione uma turma</h3>
+            <p>Veja os alunos e abra o boletim de cada um.</p>
           </div>
-          <button class="btn-primary full">Conversar</button>
-        </article>
-        <article class="t-card glass">
-          <div class="t-top">
-            <div class="avatar">ML</div>
-            <div><div class="t-name">Melina Lopes</div><div class="muted t-meta">Português • Manhã</div></div>
+
+          <div id="classDetails" class="class-details hidden">
+            <div class="class-header">
+              <h2 id="classTitle">Turma</h2>
+              <span id="classInfo" class="muted"></span>
+            </div>
+
+            <div class="students">
+              <ul id="studentList" class="grid-cards"></ul>
+            </div>
           </div>
-          <button class="btn-primary full">Conversar</button>
-        </article>
+        </section>
+      </div>
+
+      <dialog id="studentModal">
+        <form method="dialog" class="modal">
+          <div class="modal-head">
+            <h3 id="studentName">Aluno</h3>
+            <button class="icon-btn" value="close">✕</button>
+          </div>
+          <div class="modal-body">
+            <div class="student-meta" id="studentMeta"></div>
+            <table class="table" id="gradesTable">
+              <thead>
+                <tr><th>Matéria</th><th>Nota 1</th><th>Nota 2</th><th>Média</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+            <div class="student-footer">
+              <div><strong>Média geral:</strong> <span id="studentAvg"></span></div>
+              <div><strong>Situação:</strong> <span id="studentStatus" class="status"></span></div>
+            </div>
+          </div>
+        </form>
+      </dialog>
+    </section>
+
+    <!-- Classroom -->
+    <section id="classroomView" class="view" aria-labelledby="tabClassroom">
+      <div class="split">
+        <aside class="sidebar">
+          <div class="sidebar-head">
+            <h3>Professores</h3>
+            <input id="teacherSearch" type="search" placeholder="Pesquisar..." />
+          </div>
+          <ul id="teacherList" class="nav-list"></ul>
+        </aside>
+
+        <section class="content">
+          <div id="teacherEmpty" class="placeholder">
+            <h3>Selecione um professor</h3>
+            <p>Abra um chat, envie mensagens e anexos.</p>
+          </div>
+
+          <div id="teacherChat" class="chat hidden" data-scope="teacher">
+            <header class="chat-head">
+              <div class="avatar" id="teacherAvatar"></div>
+              <div>
+                <div class="chat-title" id="teacherName">Professor</div>
+                <div class="muted" id="teacherSubject">Matéria</div>
+              </div>
+            </header>
+
+            <div id="teacherMessages" class="messages"></div>
+
+            <footer class="chat-input">
+              <label class="attach" title="Anexar">
+                📎
+                <input id="teacherFile" type="file" multiple />
+              </label>
+              <input id="teacherText" type="text" autocomplete="off" placeholder="Escreva..." />
+              <button id="teacherSend" class="btn solid">Enviar</button>
+            </footer>
+          </div>
+        </section>
       </div>
     </section>
 
-    <!-- CHAT IA -->
-    <section id="tab-ia" class="tab" role="region" aria-label="Chat IA">
-      <div class="ai">
-        <div class="card glass">
-          <div class="card-head">
-            <h2>Meus chats</h2>
-            <button id="newChatBtn" class="btn-primary">Novo</button>
+    <!-- Chat IA -->
+    <section id="chatIaView" class="view" aria-labelledby="tabChat">
+      <div class="split">
+        <aside class="sidebar">
+          <div class="sidebar-head">
+            <h3>Conversas</h3>
+            <button id="newIaChat" class="btn solid small full">Novo chat</button>
           </div>
-          <div id="chatList" class="list" aria-live="polite"></div>
-        </div>
+          <ul id="iaThreadList" class="nav-list"></ul>
+        </aside>
 
-        <div class="card glass">
-          <div class="card-head">
-            <div>
-              <b id="chatTitle">Chalkrise IA</b><br/>
-              <small class="muted">Escolha um chat ou crie um novo</small>
-            </div>
-            <div class="hstack gap-8">
-              <button class="chip" id="renameChat">Renomear</button>
-              <button class="chip danger" id="deleteChat">Excluir</button>
-            </div>
+        <section class="content">
+          <div id="iaEmpty" class="placeholder">
+            <h3>Nenhum chat selecionado</h3>
+            <p>Crie um novo chat ou selecione na lista.</p>
           </div>
-          <div id="chatStream" class="chat"></div>
-          <div class="composer">
-            <div class="bar">
-              <button class="chip" aria-label="Anexar">📎</button>
-              <input id="chatInput" class="c-input" placeholder="Escreva sua mensagem… (visual)" />
-              <button id="sendBtn" class="btn-primary">Enviar</button>
-            </div>
+
+          <div id="iaChat" class="chat hidden" data-scope="ia">
+            <header class="chat-head">
+              <div class="avatar bot">IA</div>
+              <div>
+                <div class="chat-title" id="iaTitle">LousaAI</div>
+                <div class="muted">Assistente escolar</div>
+              </div>
+            </header>
+
+            <div id="iaMessages" class="messages"></div>
+
+            <footer class="chat-input">
+              <input id="iaText" type="text" autocomplete="off" placeholder="Pergunte algo..." />
+              <button id="iaSend" class="btn solid">Enviar</button>
+            </footer>
           </div>
-        </div>
+        </section>
       </div>
     </section>
   </main>
 
-  <!-- DOCK -->
-  <nav class="dock glass" aria-label="Navegação">
-    <button class="d-btn active" data-tab="home">Início 🏠</button>
-    <button class="d-btn" data-tab="classroom">Classroom 📖</button>
-    <button class="d-btn" data-tab="ia">Chat IA 🌐</button>
+  <nav class="navbar">
+    <button id="tabHome" class="nav-btn active" data-target="homeView">Início</button>
+    <button id="tabTurmas" class="nav-btn" data-target="turmasView">Turmas</button>
+    <button id="tabClassroom" class="nav-btn" data-target="classroomView">Classroom</button>
+    <button id="tabChat" class="nav-btn" data-target="chatIaView">Chat IA</button>
   </nav>
 
-  <!-- MODAL LOGIN -->
-  <div class="modal hidden" id="loginModal">
-    <div class="scrim" data-close></div>
-    <div class="sheet glass-strong" role="dialog" aria-modal="true" aria-label="Login">
-      <div class="sheet-head">
+  <!-- Modais utilitários -->
+  <dialog id="loginModal">
+    <form method="dialog" class="modal modal-auth">
+      <div class="modal-head">
         <h3>Entrar</h3>
-        <button class="chip" data-close>Fechar</button>
+        <button class="icon-btn" value="close">✕</button>
       </div>
-      <div class="vstack gap-10">
-        <input class="input" type="email" placeholder="nome@escola.edu.br" />
-        <input class="input" type="password" placeholder="••••••••" />
+      <div class="modal-body">
+        <label class="field"><span>E-mail</span><input id="authEmail" type="email" placeholder="seu@email.com" required /></label>
+        <label class="field"><span>Senha</span><input id="authPass" type="password" placeholder="••••••••" required /></label>
+        <div class="auth-actions">
+          <button id="skipLogin" class="btn outline" value="close" type="button">Pular login</button>
+          <button id="doLogin" class="btn solid" type="submit" value="login">Entrar</button>
+        </div>
+        <p class="muted tiny">MVP visual — pode pular o login.</p>
       </div>
-      <div class="sheet-actions">
-        <button class="btn-ghost" data-close>Pular login</button>
-        <button class="btn-primary" data-close>Entrar</button>
-      </div>
-    </div>
-  </div>
+    </form>
+  </dialog>
 
-  <!-- MODAL NOVO CHAT -->
-  <div class="modal hidden" id="chatModal">
-    <div class="scrim" data-close></div>
-    <div class="sheet glass-strong" role="dialog" aria-modal="true" aria-label="Novo chat">
-      <div class="sheet-head">
+  <dialog id="infoModal">
+    <form method="dialog" class="modal">
+      <div class="modal-head">
+        <h3>Detalhes</h3>
+        <button class="icon-btn" value="close">✕</button>
+      </div>
+      <div id="infoBody" class="modal-body"></div>
+    </form>
+  </dialog>
+
+  <dialog id="newChatModal">
+    <form method="dialog" class="modal">
+      <div class="modal-head">
         <h3>Novo chat</h3>
-        <button class="chip" data-close>Fechar</button>
+        <button class="icon-btn" value="close">✕</button>
       </div>
-      <input id="chatNameInput" class="input" placeholder="Nome do chat" />
-      <div class="sheet-actions">
-        <button class="btn-ghost" data-close>Cancelar</button>
-        <button id="createChat" class="btn-primary">Criar</button>
+      <div class="modal-body">
+        <label class="field"><span>Nome do chat</span><input id="newChatName" type="text" placeholder="Ex.: Dúvidas de Matemática" /></label>
+        <div class="auth-actions">
+          <button id="cancelNewChat" class="btn outline" value="close" type="button">Cancelar</button>
+          <button id="confirmNewChat" class="btn solid" type="submit" value="ok">Criar</button>
+        </div>
       </div>
-    </div>
-  </div>
+    </form>
+  </dialog>
 
-  <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+  <dialog id="attendanceModal">
+    <form method="dialog" class="modal modal-auth">
+      <div class="modal-head">
+        <h3 id="attDateLabel">Presenças</h3>
+        <button class="icon-btn" value="close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="field"><span>Turma</span><select id="attClass" class="input"></select></div>
+        <div class="att-toolbar">
+          <button id="attMarkAll" class="btn small outline" type="button">Marcar todos</button>
+          <button id="attClearAll" class="btn small outline" type="button">Limpar</button>
+          <div class="muted tiny" id="attSummary"></div>
+        </div>
+        <ul id="attList" class="att-list"></ul>
+        <div class="auth-actions">
+          <button id="attCancel" class="btn outline" type="button">Fechar</button>
+          <button id="attSave" class="btn solid" type="submit" value="ok">Salvar</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
 
-  <script src="app.js"></script>
+  <script src="script.js" defer></script>
 </body>
 </html>
